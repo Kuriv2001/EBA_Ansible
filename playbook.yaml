@@ -1,0 +1,40 @@
+---
+# Use case: ansible-playbook -i inventory.ini playbook.yaml --ask-pass
+- name: EBA Challenge
+  hosts: webservers
+  remote_user: root
+  vars_prompt:
+    - name: "db_password"
+      prompt: "Enter the database password"
+      private: yes
+  tasks:
+
+    - name: Install apache package
+      ansible.builtin.apt: 
+        name: apache2
+        update_cache: yes
+      
+    - name: Install apache utils
+      ansible.builtin.apt: 
+        name: apache2-utils
+    
+    - name: Write hostname on website
+      ansible.builtin.template:
+        src: templates/name.j2
+        dest: /var/www/html/index.html
+
+    - name: Create password file
+      ansible.builtin.shell: htpasswd -c -b /etc/apache2/.htpasswd passwordUser {{ db_password }} 
+      when: inventory_hostname == "ansible-webserver-2-1"
+
+    - name: Enable authentication
+      ansible.builtin.copy:
+        src: default.conf
+        dest: /etc/apache2/sites-enabled/000-default.conf
+        force: yes
+      when: inventory_hostname == "ansible-webserver-2-1"
+
+    - name: Restart apache to apply changes
+      ansible.builtin.service:
+        name: apache2
+        state: restarted

@@ -1,0 +1,104 @@
+<html>
+<head>
+	<link rel="stylesheet" href="dist/reveal.css" />
+	<link rel="stylesheet" href="dist/theme/serif.css" />
+	<link rel="stylesheet" href="plugin/highlight/monokai.css" />
+	<script src="plugin/highlight/highlight.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+</head>
+<body>
+<div class="reveal">
+	<div class="slides">
+		<section><img src="https://i0.wp.com/foxutech.com/wp-content/uploads/2018/01/Ansible-commands.png?fit=1800%2C514&ssl=1"></section>
+		<section>
+			<section data-markdown>
+				<textarea data-template>
+					### What is Ansible?
+					- Automation tool
+						- Configuration management
+						- Application deployment
+				</textarea>
+			</section>
+			<section data-markdown>
+				<textarea data-template>
+					### Why Ansible?
+					- Automation
+						- Save time
+						- Reduce human errors
+					- Simple
+					- Extensive Modules
+					- Easy orchestration of IT workflows
+				</textarea>
+			</section>
+		</section>
+		<section>
+			<section><img src="https://miro.medium.com/v2/resize:fit:708/1*8H4XYCNV-xamG0joz22apQ.png"></section>
+			<section data-markdown>
+				<textarea data-template>
+					### Inventory
+
+					```yaml
+					webservers:
+					  hosts:
+						webserver01:
+						  ansible_host: 192.0.2.140
+					      remote_user: user
+						  http_port: 80
+						webserver02:
+						  ansible_host: 192.0.2.150
+					      remote_user: web
+						  http_port: 443
+					```
+				</textarea>
+			</section>
+			<section data-markdown>
+				<textarea data-template>
+					### Playbooks
+
+					```yaml
+					- name: Install apache2
+					  hosts: webservers
+					  become: yes
+					  tasks:
+						- name: install apache2
+						  apt:
+							name: apache2
+							update_cache: yes
+							state: latest
+					```
+				</textarea>
+			</section>
+			<section data-markdown>
+				<textarea data-template>
+					### Run
+
+					```
+					$ ansible-playbook -i inventory.yml playbook.yml --ask-pass --ask-become-pass 
+					```
+				</textarea>
+			</section>
+		</section>
+		<section data-markdown>
+			<textarea data-template>
+				### Hands On!
+				- 🔨 Setup Environment (Install ansible, docker)
+				- 📋 Create your Inventory
+				- 🤖 Automate
+					- Install apache2
+					- Deploy webpage with host name displayed
+					- Verify hosts are rechable
+					- Setup Basic Auth for WebServer2
+					- (Extra mile: Configure SSH Key-Based Auth)
+				- ✒️ Document!
+			</textarea>
+		</section>
+	</div>
+</div>
+<script src="dist/reveal.js"></script>
+<script>
+	Reveal.initialize({
+    plugins: [RevealMarkdown, RevealHighlight],
+  });
+</script>
+</body>
+</html>

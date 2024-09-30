@@ -1,0 +1,11 @@
+services:
+  webserver-1:
+    image: "rastasheep/ubuntu-sshd:18.04"
+    ports:
+      - "80:80"
+      - "24:22"
+  webserver-2:
+    image: "rastasheep/ubuntu-sshd:18.04"
+    ports:
+      - "81:80"
+      - "23:22"
